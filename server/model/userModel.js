@@ -18,6 +18,6 @@ const userSchema = new Schema(
 
 
 
-const User = model("Drowsiness User", userSchema);
+const User = model("DrowsinessUser", userSchema);
 
 export default User;

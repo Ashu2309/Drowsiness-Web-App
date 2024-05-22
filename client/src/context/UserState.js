@@ -11,6 +11,8 @@ const UserState = (props) => {
     const navigate = useNavigate()
 
     const [userDetails, setUserDetails] = useState()
+    const [details, setDetails] = useState()
+
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -42,12 +44,28 @@ const UserState = (props) => {
         }
     }
 
+    const getDetails = async (props) => {
+        try {
+            const token = JSON.parse(localStorage.getItem("userInfo")).token;
+            console.log(token)
+            const response = await axios.get("/api/details", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setDetails(response.data.response)
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 
     return (
         <>
             <UserContext.Provider
-                value={{ userDetails, signUp, logIn }}>
+                value={{ userDetails, signUp, logIn, getDetails, details, setDetails }}>
                 {props.children}
             </UserContext.Provider>
         </>

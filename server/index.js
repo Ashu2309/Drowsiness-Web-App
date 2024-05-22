@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import connectDB from "./config/db.js";
 import userRouter from "./Router/userRoutes.js";
+import detailsRouter from "./Router/detailsRoutes.js"
 import cors from "cors"
 import dotenv from "dotenv";
 
@@ -11,6 +12,8 @@ const app = express();
 app.use(cors())
 app.use(json())
 app.use("/api/user", userRouter)
+app.use("/api/details", detailsRouter)
+
 
 
 const PORT = process.env.PORT || 5000;
