@@ -1,5 +1,6 @@
 :root {
   --first-color-second: #fff;
+  --secondary-color: #000;
   --body-color: #1e80f9;
 }
 
@@ -26,13 +27,14 @@
   padding: 3rem 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   transition: all 0.4s;
 }
 .side_child ul li {
   border-radius: 16px;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   cursor: pointer;
   position: relative;
@@ -43,11 +45,13 @@
   align-items: center;
   /* padding: 0.4rem 0rem; */
   transition: all 0.2s;
+  margin: 10px 0;
+
   li {
     display: flex;
     width: max-content;
     align-items: center;
-    margin: 0;
+
     padding: 0.4rem 1rem;
   }
   /* li.active {
@@ -65,11 +69,11 @@
 }
 .sidebar_label:hover {
   border-radius: 16px;
-
   background-color: var(--body-color);
   color: var(--first-color-second);
 }
 .sidebar_label .active {
   background-color: var(--body-color);
   color: var(--first-color-second);
+  width: 100%;
 }

@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../model/userModel.js";
+import Details from "../model/detailsModel.js";
 import bcrypt from "bcryptjs"
 import { generateJWT } from "../config/generateJWT.js";
 
@@ -42,20 +43,43 @@ export const login = asyncHandler(async (req, res) => {
     }
 })
 
-// /api/user/getuser?search=
-export const getUsers = asyncHandler(async (req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
     try {
-        const keyword = req.query.search ? {
-            $or: [
-                { name: { $regex: req.query.search, $options: "i" } },
-                { email: { $regex: req.query.search, $options: "i" } },
-            ],
-        } : {};
-        console.log(req.user._id)
-
-        const response = await User.find({ ...keyword, _id: { $ne: req.user._id } })
+        const body = req.body;
+        const response = await User.find(req.user._id)
         res.status(200).send(response);
     } catch (error) {
         res.status(404).send(error);
     }
 });
+
+
+export const updateUser = asyncHandler(async (req, res) => {
+    try {
+        const body = req.body;
+        const response = await User.findByIdAndUpdate({ _id: req.user._id }, body)
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(404).send(error);
+    }
+});
+
+
+export const deleteUser = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        // Delete user
+        const deleteUser = await User.findByIdAndDelete({ _id: userId });
+        console.log(deleteUser)
+        if (!deleteUser) {
+            return res.status(404).send("User not found");
+        }
+
+        // Also delete associated profile
+        const deleteProfile = await Details.findOneAndDelete(userId);
+
+        return res.status(200).send("User Deleted Successfully");
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}

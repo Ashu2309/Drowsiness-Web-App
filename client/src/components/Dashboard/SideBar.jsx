@@ -1,10 +1,15 @@
-import React from 'react'
+import { FiLogOut } from "react-icons/fi";
+import { CgProfile } from "react-icons/cg";
+import React, { useEffect, useState } from 'react'
 import { FaHome, FaProjectDiagram, FaBusinessTime, FaGraduationCap } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { GiSkills } from "react-icons/gi";
 import { RiPaintFill } from "react-icons/ri";
+import { Avatar } from "@chakra-ui/react";
 
 const SideBar = ({ active, setActive }) => {
+
+    const [userInfo, setUserInfo] = useState("");
 
     //console.log(active)
     const toggleSideBar = (event) => {
@@ -17,6 +22,12 @@ const SideBar = ({ active, setActive }) => {
 
         });
     }
+
+    useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        setUserInfo(userInfo)
+    }, [])
+
     return (
         <div className='side_nav' onMouseEnter={() => toggleSideBar(0)} onMouseLeave={() => toggleSideBar(1)}>
             <div className='side_child'>
@@ -25,28 +36,13 @@ const SideBar = ({ active, setActive }) => {
 
                     <div className="sidebar_label">
 
-                        <li className={active === "About" ? "active" : ""} onClick={() => setActive("About")}><FaCircleInfo /><p>AboutUs</p></li><span></span>
+                        <li className={active === "2" ? "active" : ""} onClick={() => setActive("2")}><Avatar src={userInfo?.pic} border="3px solid lightgreen"></Avatar><p>Profile</p></li><span></span>
                     </div>
                     <div className="sidebar_label">
 
-                        <li className={active === "Skills" ? "active" : ""} onClick={() => setActive("Skills")}><GiSkills /><p>Skills</p></li><span></span>
+                        <li className={active === "3" ? "active" : ""} onClick={() => setActive("3")}><FiLogOut /><p>Logout</p></li><span></span>
                     </div>
-                    <div className="sidebar_label">
 
-                        <li className={active === "Project" ? "active" : ""} onClick={() => setActive("Project")}><FaProjectDiagram /><p>Project</p></li><span></span>
-                    </div>
-                    <div className="sidebar_label">
-
-                        <li className={active === "Experience" ? "active" : ""} onClick={() => setActive("Experience")}><FaBusinessTime /><p>Expereince</p></li><span></span>
-                    </div>
-                    <div className="sidebar_label">
-
-                        <li className={active === "Education" ? "active" : ""} onClick={() => setActive("Education")}><FaGraduationCap /><p>Education</p></li><span></span>
-                    </div>
-                    <div className="sidebar_label">
-
-                        <li className={active === "Theme" ? "active" : ""} onClick={() => setActive("Theme")}><RiPaintFill /><p>Theme</p></li>
-                    </div>
 
                 </ul>
             </div>

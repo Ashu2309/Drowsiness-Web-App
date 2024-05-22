@@ -44,6 +44,48 @@ const UserState = (props) => {
         }
     }
 
+    const getUser = async () => {
+        try {
+            const token = JSON.parse(localStorage.getItem("userInfo")).token;
+            const response = await axios.get("/api/user", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteUser = async () => {
+        try {
+            const token = JSON.parse(localStorage.getItem("userInfo")).token;
+            const response = await axios.delete("/api/user", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const updateUser = async (input) => {
+        console.log(input)
+        try {
+            const token = JSON.parse(localStorage.getItem("userInfo")).token;
+            const response = await axios.put("/api/user", input, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const getDetails = async (props) => {
         try {
             const token = JSON.parse(localStorage.getItem("userInfo")).token;
@@ -65,7 +107,7 @@ const UserState = (props) => {
     return (
         <>
             <UserContext.Provider
-                value={{ userDetails, signUp, logIn, getDetails, details, setDetails }}>
+                value={{ userDetails, signUp, logIn, getUser, deleteUser, updateUser, getDetails, details, setDetails }}>
                 {props.children}
             </UserContext.Provider>
         </>
