@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Box, Card, CardBody, CardHeader, Grid, Heading, Tag, Text } from '@chakra-ui/react'
+import { Box, Card, CardBody, CardHeader, Grid, Heading, Tag, Text, useBreakpointValue } from '@chakra-ui/react'
 import UserContext from '../../context/UserContext'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
@@ -46,45 +46,38 @@ const Details = () => {
     const averageSpeed = totalSpeed / totalMotor.length;
     const distanceTravelled = totalMotor.reduce((sum, motor) => sum + ((motor.speed / 3.6) * motor.time), 0)
 
+    const gridTemplateColumns = useBreakpointValue({ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' });
+    const chartHeight = useBreakpointValue({ base: 250, md: 300, lg: 400 });
 
 
     console.log("Details", details)
     return (
         <>
             <Box padding="25px">
-                <Grid templateColumns="repeat(3,1fr)" gap="25px">
-                    <Card key="filled" variant="elevated">
+                <Grid templateColumns={gridTemplateColumns} gap="25px">
+                    <Card key="eyeClosures" variant="elevated">
                         <CardHeader>
                             <Heading size="2xl">{details?.eyeClosures.length} </Heading>
                             <Text>Eyes Closed</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='green'>
-                                + 96
-                            </Tag>
                         </CardHeader>
                     </Card>
-                    <Card key="filled" variant="elevated">
+                    <Card key="yawns" variant="elevated">
                         <CardHeader>
                             <Heading size="2xl">{details?.yawns.length} </Heading>
                             <Text>Total Yawn</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                Teal
-                            </Tag>
                         </CardHeader>
                     </Card>
-                    <Card key="filled" variant="elevated">
+                    <Card key="distanceTravelled" variant="elevated">
                         <CardHeader>
                             <Heading size="2xl">{`${distanceTravelled.toFixed(2)} m`} </Heading>
                             <Text>Distance Travelled</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                + 10 km
-                            </Tag>
                         </CardHeader>
                     </Card>
-                    <Box gridArea="2/1/4/3" backgroundColor="#fff" padding="25px" boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);" borderRadius="0.375rem">
+                    <Box gridArea={{ base: "auto", lg: "2/1/4/3" }} backgroundColor="#fff" padding="25px" boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);" borderRadius="0.375rem">
                         <Heading variant="h6" gutterBottom>
                             Eye Disclosure Over Time
                         </Heading>
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height={chartHeight}>
                             <LineChart data={eyeClosuresData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
@@ -97,26 +90,22 @@ const Details = () => {
                                 />
                                 <Tooltip
                                     labelFormatter={(label) => `Time: ${new Date(label).toLocaleString()}`}
-                                    formatter={(value, name) => [`${value.toFixed(2)} seconds`, 'Duration']}
+                                    formatter={(value) => [`${value.toFixed(2)} seconds`, 'Duration']}
                                 />
                                 <Legend verticalAlign="top" height={36} />
                                 <Line type="monotone" dataKey="duration" stroke="var(--body-color)" activeDot={{ r: 8 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     </Box>
-                    <Card key="filled" variant="elevated" gridArea="2/3/3/4">
+                    <Card key="averageEyeClosureDuration" variant="elevated" gridArea={{ base: "auto", lg: "2/3/3/4" }}>
                         <CardHeader>
                             <Heading size="2xl">{averageEyeClosureDuration} </Heading>
                             <Text>Average Eye Closure Duration</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                + 10 km
-                            </Tag>
                         </CardHeader>
                     </Card>
 
-
                     <Box
-                        gridArea="4/1/6/3"
+                        gridArea={{ base: "auto", lg: "4/1/6/3" }}
                         backgroundColor="#fff"
                         padding="25px"
                         boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
@@ -125,7 +114,7 @@ const Details = () => {
                         <Heading variant="h6" gutterBottom>
                             Yawn Duration Over Time
                         </Heading>
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height={chartHeight}>
                             <LineChart data={yawnData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
@@ -138,24 +127,21 @@ const Details = () => {
                                 />
                                 <Tooltip
                                     labelFormatter={(label) => `Time: ${new Date(label).toLocaleString()}`}
-                                    formatter={(value, name) => [`${value.toFixed(2)} seconds`, 'Duration']}
+                                    formatter={(value) => [`${value.toFixed(2)} seconds`, 'Duration']}
                                 />
                                 <Legend verticalAlign="top" height={36} />
                                 <Line type="monotone" dataKey="duration" stroke="var(--body-color)" activeDot={{ r: 8 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     </Box>
-                    <Card key="filled" variant="elevated" gridArea="4/3/5/4">
+                    <Card key="averageYawnDuration" variant="elevated" gridArea={{ base: "auto", lg: "4/3/5/4" }}>
                         <CardHeader>
                             <Heading size="2xl">{averageYawnDuration} sec </Heading>
                             <Text>Average Yawn Duration</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                + 10 km
-                            </Tag>
                         </CardHeader>
                     </Card>
                     <Box
-                        gridArea="7/1/9/3"
+                        gridArea={{ base: "auto", lg: "7/1/9/3" }}
                         backgroundColor="#fff"
                         padding="25px"
                         boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
@@ -164,7 +150,7 @@ const Details = () => {
                         <Heading variant="h6" gutterBottom>
                             Vehicle Stats
                         </Heading>
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height={chartHeight}>
                             <BarChart data={totalMotor} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
@@ -184,7 +170,7 @@ const Details = () => {
                                             name
                                         ];
                                     }}
-                                    content={({ payload, label }) => {
+                                    content={({ payload }) => {
                                         if (!payload || !payload.length) return null;
                                         const { timestamp, speed, time, distance } = payload[0].payload;
                                         return (
@@ -198,31 +184,24 @@ const Details = () => {
                                     }}
                                 />
                                 <Legend verticalAlign="top" height={36} />
-
-                                <Bar type="monotone" dataKey="speed" stroke="var(--body-color)" activeDot={{ r: 8 }} />
+                                <Bar dataKey="speed" fill="var(--body-color)" />
                             </BarChart>
                         </ResponsiveContainer>
                     </Box>
-                    <Card key="filled" variant="elevated" gridArea="7/3/8/4">
+                    <Card key="totalTimeTravelled" variant="elevated" gridArea={{ base: "auto", lg: "7/3/8/4" }}>
                         <CardHeader>
                             <Heading size="2xl">{`${totalTimeTravelled.toFixed(2)} sec`} </Heading>
                             <Text>Total Time Travelled</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                + 10 km
-                            </Tag>
                         </CardHeader>
                     </Card>
-                    <Card key="filled" variant="elevated" gridArea="8/3/9/4">
+                    <Card key="averageSpeed" variant="elevated" gridArea={{ base: "auto", lg: "8/3/9/4" }}>
                         <CardHeader>
                             <Heading size="2xl">{`${averageSpeed.toFixed(2)} km/hr`} </Heading>
                             <Text>Average Speed</Text>
-                            <Tag size="lg" variant='subtle' colorScheme='cyan'>
-                                + 10 km
-                            </Tag>
                         </CardHeader>
                     </Card>
                     <Box
-                        gridArea="9/1/11/3"
+                        gridArea={{ base: "auto", lg: "9/1/11/3" }}
                         backgroundColor="#fff"
                         padding="25px"
                         boxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
@@ -231,7 +210,7 @@ const Details = () => {
                         <Heading variant="h6" gutterBottom>
                             Distance Stats
                         </Heading>
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height={chartHeight}>
                             <BarChart data={totalMotor} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
@@ -251,7 +230,7 @@ const Details = () => {
                                             name
                                         ];
                                     }}
-                                    content={({ payload, label }) => {
+                                    content={({ payload }) => {
                                         if (!payload || !payload.length) return null;
                                         const { timestamp, speed, time, distance } = payload[0].payload;
                                         return (
@@ -269,9 +248,8 @@ const Details = () => {
                             </BarChart>
                         </ResponsiveContainer>
                     </Box>
-                </Grid >
-
-            </Box >
+                </Grid>
+            </Box>
         </>
     )
 }

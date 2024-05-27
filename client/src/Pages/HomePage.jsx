@@ -35,7 +35,7 @@ function Homepage() {
                 borderWidth="1px"
             >
                 <Text fontSize="4xl" fontFamily="Work sans" textAlign="center">
-                    Chat-Hub
+                    Drowsiness Analytics
                 </Text>
             </Box>
             <Box bg="white" w={{ lg: "40%", md: "80%", base: "100%" }} p={4} borderRadius="lg" borderWidth="1px">
